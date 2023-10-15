@@ -28,7 +28,7 @@ FREE and OPEN-SOURCE!
  
 ![Screenshot 3](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/f64187de-c789-4cd8-9824-20e79b3dc024)
  
-#### Otomatic proxy list installer!
+#### Automatic proxy list installer!
  
 ![Screenshot 4](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/523e67ac-26a0-473e-bb1d-70e734ef3976)
  
