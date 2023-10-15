@@ -92,17 +92,11 @@ user_agents = [
 ### Requirements
 
 - [Python3](https://www.python.org/downloads/)
-- 
 - [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
-- 
 - [scapy](https://scapy.net/)
-- 
 - [pynput](https://pypi.org/project/pynput/)
-- 
 - [tkinter](https://www.geeksforgeeks.org/python-gui-tkinter/)
-- 
 - [colorama](https://pypi.org/project/colorama/)
-- 
 - [requests](https://pypi.org/project/requests/)
   
 ## Installation
