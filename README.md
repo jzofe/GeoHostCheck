@@ -93,7 +93,7 @@ user_agents = [
 ## Documents
 
 ```
-  TLS  | response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
+  TLS  | response = requests.get(f"https://{target_ip}", headers=headers
   HTTP | request = f"GET / HTTP/1.1\r\nHost: {target_ip}\r\n\r\n"
   UDP  | client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
   TCP  | client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
