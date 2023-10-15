@@ -4,6 +4,8 @@
  
 ### FREE and OPEN-SOURCE!
 
+LICENSE : [MIT](https://github.com/scriptkidsensei/GeoHostCheck/blob/main/LICENSE)
+
 Check the status of an IP address or domain without banning your request!
 
  
