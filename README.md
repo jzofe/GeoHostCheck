@@ -1,5 +1,5 @@
 
-<h1 align="center">Geohostcheck - Host Status Checker with Proxy support</h1>
+<h1 align="center"> :boom: Geohostcheck - Host Status Checker with Proxy support</h1>
 <em><h5 align="center">(Programming Language - Python 3)</h5></em># 
  
 ### FREE and OPEN-SOURCE!
@@ -99,27 +99,48 @@ user_agents = [
 - [colorama](https://pypi.org/project/colorama/)
 - [requests](https://pypi.org/project/requests/)
   
-## Installation
+# Installation
  
 You can install Geohostcheck by cloning this repository:
- 
+
+## - LINUX
+
 ```shell
 git clone https://github.com/scriptkidsensei/GeoHostCheck.git
- 
-```
- 
-```shell
 pip3 install -r requirements.txt
 sudo python3 geohc.py
 ```
+
 or 
 
 ```shell
-apt -y update && python3 python3-pip make cmake automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd MH* && pip3 install -r requirements.txt
+apt -y update && python3 python3-pip autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip3 install -r requirements.txt 
 ```
 
- # :question: Why GeoHC?
+termux 
+```shell
+pkg update && pkg install python automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip install -r requirements.txt
+```
+## WINDOWS
+Install git, [git-scm](https://git-scm.com/)
 
+Open PowerShell or Command Prompt
+
+```
+Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.9.6/python-3.9.6-amd64.exe -OutFile python-3.9.6-amd64.exe
+Start-Process -Wait -FilePath .\python-3.9.6-amd64.exe
+```
+Press "Add Python 3.x to PATH",
+
+And
+
+```
+git clone https://github.com/scriptkidsensei/GeoHostCheck
+cd GeoHostCheck
+pip install -r requirements.txt
+```
+
+# :question: Why GeoHC?
 Other check applications/sites send requests via static IP address, while geoHC constantly changes proxy (1 req = 1 proxy). 
 If requests are banned, the script automatically changes user-agent. If you do not have a proxy list, geohc can download proxy lists from the internet.
 
