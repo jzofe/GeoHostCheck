@@ -2,7 +2,7 @@
 
 ### Geohostcheck is a powerful host status checker with proxy support.
 
-geohc free and open source!
+FREE and OPEN-SOURCE!
 
 ## Features
 
