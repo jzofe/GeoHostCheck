@@ -14,8 +14,7 @@ Check the status of an IP address or domain without banning your request!
 - Use proxy servers for checking.
   
 - Highly customizable with user agents.
-
- * Instant automatic user agent changes if proxy or request is banned
+* Instant automatic user agent changes if proxy or request is banned
    
 - Easy to use and robust.
   
