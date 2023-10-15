@@ -36,3 +36,6 @@ git clone https://github.com/scriptkidsensei/GeoHostCheck.git
 pip3 install -r requirements.txt
 sudo python3 geohc.py
 ```
+
+
+It took me a lot of effort to make this bash script. Please star this repo :D
