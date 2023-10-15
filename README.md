@@ -27,3 +27,10 @@ You can install Geohostcheck by cloning this repository:
 
 ```shell
 git clone https://github.com/scriptkidsensei/GeoHostCheck.git
+
+```
+
+```shell
+pip3 install -r requirements.txt
+sudo python3 geohc.py
+```
