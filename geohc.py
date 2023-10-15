@@ -16,10 +16,8 @@ from urllib.parse import urlparse
 import socket
 import tkinter as tk
 import random
+from requests.exceptions import RequestException
 from pynput import keyboard
-
-
-### CODED BY FYKS !
 
 os.system('clear')
 os.system('echo -e "\033]0;GeoHostChecker | Main \007"')
@@ -66,7 +64,7 @@ def check():
     target_ip = input(f" {Fore.GREEN}root{Style.RESET_ALL}@geohc/host IP/Domain >_ ")
     print("")
     print("PROTOCOLS")
-    print("HTTP, UDP, TCP, ICMP")
+    print("HTTP, TLS, UDP, TCP, ICMP | DNS")
     print("")
     protocol = input("> Select a protocol : ")
     ping_menu = f"""
@@ -317,6 +315,37 @@ def send_udp_packet(target_ip, target_port, protocol, proxy_address):
     finally:
         client_socket.close()
 
+def send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent):
+    location_info = get_location_info(proxy_address)
+    location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
+
+    if location_info:
+        location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
+
+    try:
+        response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
+
+        if response.status_code == 200:
+            response_text = response.text
+            yslx(f"UP! | {target_ip} | {location_str} | {protocol}")
+            return response_text
+        else:
+            kirx("DOWN! | LOCATION {location_str}")
+            print("")
+            user2(f"Host DOWN. User-agent changed to: {user_agent}")
+            print("")
+            time.sleep(1.1)
+            return None
+
+    except RequestException as e:
+        kirx(f"An error occurred: {str(e)}")
+        kirx(f"DOWN | {target_ip} | {location_str} | {protocol}")
+        print("")
+        user2(f"Host DOWN. User-agent changed to: {user_agent}")
+        print("")
+        time.sleep(1.1)
+        return None
+
 def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
     location_info = get_location_info(proxy_address)
     location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
@@ -336,7 +365,7 @@ def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
         else:
             kirx("DOWN! | LOCATION {location_str}")
             print("")
-            print(f"Host DOWN. User-agent changed to: {user_agent}")
+            user2(f"Host DOWN. User-agent changed to: {user_agent}")
             print("")
             time.sleep(1.1)
             return None
@@ -353,7 +382,45 @@ headers = {
     "User-Agent": get_user_agent(),
 }
 
+def resolve_ip_to_hostname(target_ip):
+    try:
+        hostname, _, _ = socket.gethostbyaddr(target_ip)
+        return hostname
+    except socket.herror as e:
+        kirx(f"Failed to resolve IP address {target_ip} to hostname: {str(e)}")
+        return None
 
+def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent):
+    location_info = get_location_info(proxy_address)
+    location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
+
+    if location_info:
+        location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
+
+    url = f"https://{target_ip}"
+    try:
+        response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
+
+        if response.status_code == 200:
+            response_text = response.text
+            yslx(f"UP! | {target_ip} | {location_str} | {protocol}")
+            return response_text
+        else:
+            kirx("DOWN! | LOCATION {location_str}")
+            print("")
+            user2(f"Host DOWN. User-agent changed to: {user_agent}")
+            print("")
+            time.sleep(1.1)
+            return None
+
+    except RequestException as e:
+        kirx(f"An error occurred: {str(e)}")
+        kirx(f"DOWN | {target_ip} | {location_str} | {protocol}")
+        print("")
+        user2(f"Host DOWN. User-agent changed to: {user_agent}")
+        print("")
+        time.sleep(1.1)
+        return None
 def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
     ping_count = 0
     down_count = 0
@@ -390,7 +457,7 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
                                 down_count += 1
                                 if down_count >= 2:
                                     user_agent = get_user_agent()
-                                    print(f"Host DOWN. User-agent changed to: {user_agent}")
+                                    user2(f"Host DOWN. User-agent changed to: {user_agent}")
                             else:
                                 down_count = 0
                         else:
@@ -400,14 +467,13 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
                     else:
                         kirx(f"DOWN! | LOCATION {location_str}")
                         print("")
-                        print(f"Host DOWN. User-agent changed to: {user_agent}")
+                        user2t(f"Host DOWN. User-agent changed to: {user_agent}")
                         print("")
                 else:
                     kirx(f"DOWN! | LOCATION {location_str}")
                     print("")
-                    print(f"Host DOWN. User-agent changed to: {user_agent}")
+                    user2(f"Host DOWN. User-agent changed to: {user_agent}")
                     print("")
-
             elif protocol == "HTTP":
                 response = send_http_request(target_ip, port, protocol, proxy_address, user_agent)
                 if response:
@@ -423,8 +489,12 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
                         down_count = 0
             elif protocol == "UDP":
                 send_udp_packet(target_ip, udp_port, protocol, proxy_address)
+            elif protocol == "DNS":
+                send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent)
             elif protocol == "TCP":
                 send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent)
+            elif protocol == "TLS":
+                send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent)
             else:
                 kirx("Invalid protocol. Press 'CTRL+C'")
         except KeyboardInterrupt:
@@ -544,5 +614,6 @@ if __name__ == "__main__":
     tcp_port = 443
     udp_port = 53
     port = 80
+    tls_port = 443
     filename = "proxy_list.txt"
     main()
