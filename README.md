@@ -45,4 +45,4 @@ sudo python3 geohc.py
 ```
 
 
-It took me a lot of effort to make this bash script. Please star this repo :D
+It took me a lot of effort to make this python script. Please star this repo :D
