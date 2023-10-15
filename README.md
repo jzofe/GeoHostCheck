@@ -6,7 +6,7 @@
 
 - Check the status of hosts with different protocols.
 - Use proxy servers for checking.
-- Highly customizable with user agents.
+- Highly customizable with user agents. (Instant automatic user agent changes if proxy or request is banned]
 - Easy to use and robust.
 
 ![Header](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/fea0a2eb-905e-4858-b2a7-17d3d8222ea1)
