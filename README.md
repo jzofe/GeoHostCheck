@@ -123,7 +123,7 @@ apt -y update && python3 python3-pip autoconf m4 build-essential git && git clon
 pkg update && pkg install python automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip install -r requirements.txt
 ```
 ## - WINDOWS -
-Install git, [git-scm](https://git-scm.com/)
+Install git [git-scm](https://git-scm.com/)
 
 Open PowerShell or Command Prompt
 
