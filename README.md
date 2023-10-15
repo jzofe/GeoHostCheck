@@ -103,7 +103,7 @@ user_agents = [
  
 You can install Geohostcheck by cloning this repository:
 
-## - LINUX
+## - LINUX -
 
 ```shell
 git clone https://github.com/scriptkidsensei/GeoHostCheck.git
@@ -121,7 +121,7 @@ termux
 ```shell
 pkg update && pkg install python automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip install -r requirements.txt
 ```
-## WINDOWS
+## - WINDOWS -
 Install git, [git-scm](https://git-scm.com/)
 
 Open PowerShell or Command Prompt
