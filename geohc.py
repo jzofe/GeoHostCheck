@@ -18,6 +18,9 @@ import tkinter as tk
 import random
 from pynput import keyboard
 
+
+### CODED BY FYKS !
+
 os.system('clear')
 os.system('echo -e "\033]0;GeoHostChecker | Main \007"')
 ping_listener = None
