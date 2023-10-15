@@ -1,8 +1,10 @@
 # Geohostcheck
  
 ### Geohostcheck is a powerful host status checker with proxy support.
- 
-FREE and OPEN-SOURCE!
+
+Check the status of an IP address or domain without banning your request!
+
+--------FREE and OPEN-SOURCE!
  
 ## Features 
  
