@@ -10,10 +10,11 @@ FREE and OPEN-SOURCE!
 - Use proxy servers for checking.
 - Highly customizable with user agents. (Instant automatic user agent changes if proxy or request is banned]
 - Easy to use and robust.
+## Screenshots
 
 ![Header](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/fea0a2eb-905e-4858-b2a7-17d3d8222ea1)
 
-## Screenshots
+#### Protocols
 
 ![Screenshot 1](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/03ed5f0f-b5e7-4d6f-9139-afe86e4c6a36)
 
