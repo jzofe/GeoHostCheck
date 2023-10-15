@@ -30,10 +30,10 @@ Check the status of an IP address or domain without banning your request!
 #### Protocol Choice
  
 ![DeepinScreenshot_select-area_20231015171230](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/f762db56-8b76-4e62-a833-f0edad1e6601)
- 
+#### Status : up
 ![Screenshot 2](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/a78db6dd-6a6a-47d7-9dd2-cf8df0f505e9)
  
-#### User-agent
+#### Status: down + User-agent
  
 ![Screenshot 3](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/f64187de-c789-4cd8-9824-20e79b3dc024)
  
