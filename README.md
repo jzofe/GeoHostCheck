@@ -90,6 +90,17 @@ user_agents = [
  "Dalvik/1.6.0 (Linux; U; Android 8.1.0; E100 Build/KOT49H)"
 ]
 ```
+## Documents
+
+```
+  TLS  | response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
+  HTTP | request = f"GET / HTTP/1.1\r\nHost: {target_ip}\r\n\r\n"
+  UDP  | client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  TCP  | client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  ICMP | response = sr1(IP(dst=target_ip) / ICMP(), verbose=0, timeout=2).... *LINE 452*
+  DNS  | *LINE 393*
+```
+
 # Getting Started
 ### Requirements
 
