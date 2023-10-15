@@ -112,6 +112,12 @@ git clone https://github.com/scriptkidsensei/GeoHostCheck.git
 pip3 install -r requirements.txt
 sudo python3 geohc.py
 ```
+or 
+
+```shell
+apt -y update && python3 python3-pip make cmake automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd MH* && pip3 install -r requirements.txt
+```
+
  # :question: Why GeoHC?
 
 Other check applications/sites send requests via static IP address, while geoHC constantly changes proxy (1 req = 1 proxy). 
