@@ -99,6 +99,10 @@ git clone https://github.com/scriptkidsensei/GeoHostCheck.git
 pip3 install -r requirements.txt
 sudo python3 geohc.py
 ```
- 
+ # Why GeoHC?
+
+Other check applications/sites send requests via static IP address, while geoHC constantly changes proxy (1 req = 1 proxy). 
+If requests are banned, the script automatically changes user-agent. If you do not have a proxy list, geohc can download proxy lists from the internet.
+
  
 It took me a lot of effort to make this python script. Please star this repo :D
