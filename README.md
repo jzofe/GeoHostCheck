@@ -11,7 +11,7 @@ FREE and OPEN-SOURCE!
 - Use proxy servers for checking.
   
 - Highly customizable with user agents.
- * Instant automatic user agent changes if proxy or request is banned
+ *Instant automatic user agent changes if proxy or request is banned
    
 - Easy to use and robust.
   
