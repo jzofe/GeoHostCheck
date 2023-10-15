@@ -561,7 +561,7 @@ def build_menu():
 
 menu = f"""
               [Geo {Fore.RED}H{Style.RESET_ALL}ost {Fore.RED}C{Style.RESET_ALL}hecker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL} | Proxies {kalin}{sari}{proxy_count}{sil}
-                                {Stlye.BRIGHT}Web{Style.RESET_ALL} - endertopluluk.com
+                                {Style.BRIGHT}Web{Style.RESET_ALL} - endertopluluk.com
       [X] Main
       |
       ├── [1] Start
