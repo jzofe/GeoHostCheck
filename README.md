@@ -20,7 +20,7 @@ FREE and OPEN-SOURCE!
  
 #### Protocol Choice
  
-![Screenshot 1](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/03ed5f0f-b5e7-4d6f-9139-afe86e4c6a36)
+![DeepinScreenshot_select-area_20231015171230](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/f762db56-8b76-4e62-a833-f0edad1e6601)
  
 ![Screenshot 2](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/a78db6dd-6a6a-47d7-9dd2-cf8df0f505e9)
  
@@ -39,7 +39,7 @@ FREE and OPEN-SOURCE!
  *Line : 449*
  
 ```python
- 
+
 if protocol == "ICMP":
 #imcp proxy ping code...
  
