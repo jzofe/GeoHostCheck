@@ -1,6 +1,8 @@
-# Geohostcheck
+
+<h1 align="center">Geohostcheck - Host Status Checker with Proxy support</h1>
+<em><h5 align="center">(Programming Language - Python 3)</h5></em># 
  
-### Geohostcheck is a powerful host status checker with proxy support. FREE and OPEN-SOURCE!
+### FREE and OPEN-SOURCE!
 
 Check the status of an IP address or domain without banning your request!
 
