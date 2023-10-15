@@ -1,24 +1,9 @@
 # Geohostcheck
  
-### Geohostcheck is a powerful host status checker with proxy support.
-
-```ascii
-_____/\\\\\\\\\\\\__/\\\\\\\\\\\\\\\_______/\\\\\_______/\\\________/\\\________/\\\\\\\\\
- ___/\\\//////////__\/\\\///////////______/\\\///\\\____\/\\\_______\/\\\_____/\\\////////_
-  __/\\\_____________\/\\\_______________/\\\/__\///\\\__\/\\\_______\/\\\___/\\\/__________
-   _\/\\\____/\\\\\\\_\/\\\\\\\\\\\______/\\\______\//\\\_\/\\\\\\\\\\\\\\\__/\\\____________
-    _\/\\\___\/////\\\_\/\\\///////______\/\\\_______\/\\\_\/\\\/////////\\\_\/\\\____________
-     _\/\\\_______\/\\\_\/\\\_____________\//\\\______/\\\__\/\\\_______\/\\\_\//\\\___________
-      _\/\\\_______\/\\\_\/\\\______________\///\\\__/\\\____\/\\\_______\/\\\__\///\\\_________
-       _\//\\\\\\\\\\\\/__\/\\\\\\\\\\\\\\\____\///\\\\\/_____\/\\\_______\/\\\____\////\\\\\\\\\
-        __\////////////____\///////////////_______\/////_______\///________\///________\/////////_
-
-
-```
+### Geohostcheck is a powerful host status checker with proxy support. FREE and OPEN-SOURCE!
 
 Check the status of an IP address or domain without banning your request!
 
---------FREE and OPEN-SOURCE!
  
 ## Features 
  
@@ -115,7 +100,7 @@ git clone https://github.com/scriptkidsensei/GeoHostCheck.git
 pip3 install -r requirements.txt
 sudo python3 geohc.py
 ```
- # Why GeoHC?
+ # :question: Why GeoHC?
 
 Other check applications/sites send requests via static IP address, while geoHC constantly changes proxy (1 req = 1 proxy). 
 If requests are banned, the script automatically changes user-agent. If you do not have a proxy list, geohc can download proxy lists from the internet.
