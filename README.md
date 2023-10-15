@@ -22,7 +22,11 @@ FREE and OPEN-SOURCE!
 
 ![Screenshot 2](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/a78db6dd-6a6a-47d7-9dd2-cf8df0f505e9)
 
+#### User-agent
+
 ![Screenshot 3](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/f64187de-c789-4cd8-9824-20e79b3dc024)
+
+#### Otomatic proxy list installer!
 
 ![Screenshot 4](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/523e67ac-26a0-473e-bb1d-70e734ef3976)
 
