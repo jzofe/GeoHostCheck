@@ -1,7 +1,7 @@
 
 <h1 align="center"> :boom: Geohostcheck - Host Status Checker with Proxy support</h1>
 <em><h5 align="center">(Programming Language - Python 3)</h5></em># 
- 
+ <a href="#"><img alt="GeoHostCheck last commit " src="https://img.shields.io/github/last-commit/scriptkidsensei/GeoHostCheck/main?color=green&style=for-the-badge"></a>
 ### FREE and OPEN-SOURCE!
 
 *LICENSE : [MIT](https://github.com/scriptkidsensei/GeoHostCheck/blob/main/LICENSE)*
