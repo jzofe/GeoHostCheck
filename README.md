@@ -12,6 +12,8 @@ FREE and OPEN-SOURCE!
  * Instant automatic user agent changes if proxy or request is banned
 - Easy to use and robust.
 - If you don't have a proxy list, geohc will automatically search and download it from the internet.
+
+
  
 ### Protocols 
 
@@ -34,7 +36,7 @@ if protocol == "ICMP":
  
 ![Header](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/fea0a2eb-905e-4858-b2a7-17d3d8222ea1)
  
-#### Protocols
+#### Protocol Choice
  
 ![Screenshot 1](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/03ed5f0f-b5e7-4d6f-9139-afe86e4c6a36)
  
