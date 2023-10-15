@@ -4,7 +4,7 @@
 
 FREE and OPEN-SOURCE!
 
-## Features :^
+## Features 
 
 - Check the status of hosts with different protocols.
 - Use proxy servers for checking.
