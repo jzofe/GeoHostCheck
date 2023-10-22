@@ -30,7 +30,7 @@ Check the status of an IP address or domain without banning your request!
 
 ## Screenshots
  
-![Header](https://github.com/scriptkidsensei/GeoHostCheck/assets/55909183/fea0a2eb-905e-4858-b2a7-17d3d8222ea1)
+![Header](https://raw.githubusercontent.com/scriptkidsensei/GeoHostCheck/main/img/Screenshot_20231022_230915.png)
  
 #### Protocol Choice
  
