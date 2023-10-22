@@ -124,20 +124,20 @@ You can install Geohostcheck by cloning this repository:
 
 ```shell
 git clone https://github.com/scriptkidsensei/GeoHostCheck.git
-pip3 install -r requirements.txt
+sudo bash Setup.sh
 sudo python3 geohc.py
 ```
 
 or 
 
 ```shell
-apt -y update && python3 python3-pip autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip3 install -r requirements.txt 
+apt -y update && python3 python3-pip autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && sudo bash Setup.sh
 ```
 
 #### termux 
 
 ```shell
-pkg update && pkg install python automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && pip install -r requirements.txt
+pkg update && pkg install python automake autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && sudo bash Setup.sh
 ```
 ## - WINDOWS -
 Install git [git-scm](https://git-scm.com/)
@@ -155,7 +155,8 @@ And
 ```
 git clone https://github.com/scriptkidsensei/GeoHostCheck
 cd GeoHostCheck
-pip install -r requirements.txt
+sudo bash Setup.sh
+python3 geohc.py
 ```
 
 #### Quick usage
