@@ -21,7 +21,7 @@ from requests.exceptions import RequestException
 from pynput import keyboard
 
 os.system('clear')
-os.system('echo -e "\033]0;GeoHostChecker | Main \007"')
+os.system('echo -e "\033]0;GeoHostChecker \007"')
 ping_listener = None
 
 
@@ -227,8 +227,22 @@ def get_proxy_list():
 
 
 def load_proxy_list(file_path):
-    with open(file_path, 'r') as file:
-        return [line.strip() for line in file]
+    try:
+        with open(file_path, 'r') as file:
+            proxy_list = file.read().splitlines()
+            if not proxy_list:
+                raise ValueError("Proxy list is empty")
+        return proxy_list
+    except FileNotFoundError:
+        yslx("Proxy list file not found. being created...")
+        os.system('sudo touch proxy_list.txt')
+        sys.exit(1)
+    except PermissionError:
+        kirx("You need root permissions to run this script. Try running with 'sudo su' command.")
+        sys.exit(1)
+    except ValueError as e:
+        kirx(f"Error: {str(e)}")
+        sys.exit(1)
 
 def send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent):
     location_info = get_location_info(proxy_address)
@@ -261,6 +275,7 @@ def send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent):
         client_socket.close()
 
 def save_to_file(proxy_list):
+
     with open("proxy_list.txt", "w") as file:
         for proxy in proxy_list:
             file.write(proxy + "\n")
@@ -514,6 +529,9 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
         except socket.gaierror as e:
             kirx("Name or service not known")
             return_to_main_menu()
+        except PermissionError:
+            print("You need root permissions to run this script. Try running with 'sudo su' command.")
+            sys.exit(1)
 
         ping_count += 1
         if ping_count >= 1:
@@ -619,43 +637,75 @@ def main():
     elif choice == "4":
         yslx("Goodbye!")
         sys.exit(0)
+def clis():
+    parser = argparse.ArgumentParser(description="GeoHostChecker")
+    parser.add_argument("ip", type=str, nargs='?', help="IP address or domain name")
+    parser.add_argument("protocol", type=str, nargs='?', help="Protocol to check (e.g., HTTP, ICMP)")
+    parser.add_argument("--delete-proxy-list", action="store_true", help="Fresh proxy list")
+    parser.add_argument("--install-proxy-list", action="store_true", help="Install proxy list from the internet")
 
-def check_ip_protocol_from_args():
-    if len(sys.argv) != 3:
-        print("Kullanım: python3 geohc.py <ip> <protocol>")
-        sys.exit(1)
+    args = parser.parse_args()
 
-    proxy_list = load_proxy_list("proxy_list.txt")
-    proxy_count = count_proxies(filename)
-    user_agent = get_user_agent()
-    proxy_list = get_proxy_list()
-    target_ip = sys.argv[1]
-    protocol = sys.argv[2]
-    proxy_list = load_proxy_list("proxy_list.txt")
-    ping_menu = f"""
-                     [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
+    if args.install_proxy_list:
+        max1("Proxies are being downloaded automatically from the internet, please wait...")
+        proxy_list = get_proxy_list()
 
-                      IP : >{target_ip}< | Total proxy : {kalin}{sari}{proxy_count}{sil} | {protocol}
-
-                                      Exit : {Fore.RED}Q{Style.RESET_ALL}
-
-    """
-    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
-    print(ping_menu)
-
-    current_proxy_index = 0
-
-    while current_proxy_index < len(proxy_list):
-        proxy = proxy_list[current_proxy_index]
-        proxy_address, proxy_port = proxy.split(':')
-        user_agent = get_user_agent()
-        result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
-
-        if not result:
-            current_proxy_index += 1
+        if proxy_list:
+            save_to_file(proxy_list)
+            yslx("Finished! proxy_list.txt")
+            time.sleep(1)
         else:
-            current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
-    ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
+            kirx("ERROR")
+        sys.exit(0)
+    elif args.delete_proxy_list:
+         max1("Proxy list deleted")
+         with open(filename, "r+") as file:
+            file.truncate(0)
+
+    if (not args.ip or not args.protocol) and not args.install_proxy_list and not args.delete_proxy_list:
+        print("Usage: python3 geohc.py <ip> <protocol>")
+        sys.exit(1)
+    target_ip = args.ip
+    protocol = args.protocol
+    check_ip_protocol_from_args(target_ip, protocol)
+
+def check_ip_protocol_from_args(target_ip, protocol):
+    proxy_address = None
+    proxy_port = None
+    protocol = None
+
+    try:
+        proxy_list = load_proxy_list("proxy_list.txt")
+        proxy_count = count_proxies("proxy_list.txt")
+        user_agent = get_user_agent()
+
+        ping_menu = """
+                         [Geo Host Checker] by Fyks {}<scriptkidsensei>{}{}
+
+                          IP : >{}< | Total proxy : {}{}{} | {}
+
+                                          Exit : {}Q{}
+        """.format(Fore.MAGENTA, Style.RESET_ALL, target_ip, kalin, Fore.MAGENTA, Style.RESET_ALL, proxy_count, sil, protocol, Fore.RED, Style.RESET_ALL)
+
+        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        print(ping_menu)
+
+        current_proxy_index = 0
+
+        while current_proxy_index < len(proxy_list):
+            proxy = proxy_list[current_proxy_index]
+            proxy_address, proxy_port = proxy.split(':')
+            user_agent = get_user_agent()
+            result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
+
+            if not result:
+                current_proxy_index += 1
+            else:
+                current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
+        ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
+    except PermissionError:
+        print("You need root permissions to run this script. Try running with 'sudo su' command.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_interrupt)
@@ -664,7 +714,20 @@ if __name__ == "__main__":
     port = 80
     tls_port = 443
     filename = "proxy_list.txt"
-    if len(sys.argv) == 3:
-        check_ip_protocol_from_args()
+
+    if "--install-proxy-list" in sys.argv:
+        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        clis()
     else:
-        main()
+        if len(sys.argv) == 3:
+            clis()
+        elif len(sys.argv) == 2:
+            kirx("Usage: python3 geohc.py <ip> <protocol>")
+            sys.exit(1)
+        elif len(sys.argv) > 3:
+            kirx("Too many arguments. Usage: python3 geohc.py <ip> <protocol>")
+        elif "--delete-proxy-list" in sys.argv:
+            os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+            clis()
+        else:
+            main()
