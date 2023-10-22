@@ -673,7 +673,7 @@ def clis():
     parser = argparse.ArgumentParser(description="GeoHostChecker")
     parser.add_argument("ip", type=str, nargs='?', help="IP address or domain name")
     parser.add_argument("protocol", type=str, nargs='?', help="Protocol to check (e.g., HTTP, ICMP)")
-    parser.add_argument("--delete-proxy-list", action="store_true", help="Fresh proxy list")
+    parser.add_argument("--delete-proxy-list", action="store_true", help="Delete proxy list")
     parser.add_argument("--install-proxy-list", action="store_true", help="Install proxy list from the internet")
     parser.add_argument("--info", action="store_true", help="IP Lookup")
 
@@ -701,6 +701,7 @@ def clis():
         infoxx(infoxb)
 
     if (not args.ip or not args.protocol) and not args.install_proxy_list and not args.delete_proxy_list:
+        print("")
         print("Usage: python3 geohc.py <ip> <protocol>")
         sys.exit(1)
 
@@ -760,15 +761,14 @@ if __name__ == "__main__":
     else:
         if len(sys.argv) == 3:
             clis()
-        elif len(sys.argv) == 2:
-            kirx("Usage: python3 geohc.py <ip> <protocol>")
-            sys.exit(1)
         elif len(sys.argv) > 3:
             kirx("Too many arguments. Usage: python3 geohc.py <ip> <protocol>")
         elif "--delete-proxy-list" in sys.argv:
             os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
             clis()
         elif "--info" in sys.argv:
+            clis()
+        elif "-h" in sys.argv:
             clis()
         else:
             main()
