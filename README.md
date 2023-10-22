@@ -157,6 +157,12 @@ cd GeoHostCheck
 pip install -r requirements.txt
 ```
 
+#### Quick usage
+```
+python3 geohc.py -h
+
+
+```
 # :question: Why GeoHC?
 Other check applications/sites send requests via static IP address, while geoHC constantly changes proxy (1 req = 1 proxy). 
 If requests are banned, the script automatically changes user-agent. If you do not have a proxy list, geohc can download proxy lists from the internet.
