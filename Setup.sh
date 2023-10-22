@@ -19,4 +19,6 @@ sudo npm install cfonts
  
 sudo pip3 install -r requirements.txt
  
-echo "Done! 'python3 geohc.py' "
+echo "Done! "
+
+sudo python3 geohc.py
