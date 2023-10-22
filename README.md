@@ -128,10 +128,10 @@ sudo bash Setup.sh
 sudo python3 geohc.py
 ```
 
-or 
+quick
 
 ```shell
-apt -y update && python3 python3-pip autoconf m4 build-essential git && git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && sudo bash Setup.sh
+git clone https://github.com/scriptkidsensei/GeoHostCheck && cd /GeoHostCheck && sudo bash Setup.sh && sudo python3 geohc.py
 ```
 
 #### termux 
