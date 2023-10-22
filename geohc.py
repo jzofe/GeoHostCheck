@@ -18,42 +18,9 @@ import tkinter as tk
 import random
 from requests.exceptions import RequestException
 
-def install_nodejs():
-    try:
-        subprocess.run(["sudo", "pacman", "-S", "nodejs"], shell=True, check=True)
-        os.system('clear')
-        subprocess.run(["sudo", "apt-get", "install", "nodejs"], shell=True, check=True)
-        os.system('clear')
-        print("Node.js installed successfully.")
-    except subprocess.CalledProcessError:
-        print("Failed to install Node.js.")
-
-def check_nodejs_installed():
-    try:
-        subprocess.run(["node", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-        print("Node.js is already installed.")
-    except subprocess.CalledProcessError:
-        print("Node.js is not installed. Installing Node.js...")
-        install_nodejs()
-
-def install_cfonts():
-    try:
-        subprocess.run(["sudo", "npm", "install", "cfonts", ], shell=True, check=True)
-        os.system('clear')
-    except subprocess.CalledProcessError:
-        print("Failed to install cfonts.")
-
-def check_cfonts_installed():
-    try:
-        subprocess.run(["cfonts"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-    except subprocess.CalledProcessError:
-        install_cfonts()
-
 os.system('clear')
 os.system('echo -e "\033]0;GeoHostChecker \007"')
 ping_listener = None
-
-check_nodejs_installed()
 
 user_agents =  [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
