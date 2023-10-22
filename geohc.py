@@ -386,7 +386,7 @@ def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
             yslx(f"UP! | {target_ip} | {location_str} | {protocol}")
             return response_text
         else:
-            kirx("DOWN! | LOCATION {location_str}")
+            kirx(f"DOWN! | LOCATION {location_str}")
             print("")
             user2(f"Host DOWN. User-agent changed to: {user_agent}")
             print("")
@@ -454,7 +454,11 @@ def get_ip_info2(infoxb):
 def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
     ping_count = 0
     down_count = 0
-
+    info = get_ip_info(target_ip)
+    print(f" {Style.BRIGHT}{Fore.GREEN}< IP INFO >{sil}")
+    print(f"| >>> Location:", info.get("country"))
+    print(f"| >> ISP:", info.get("org"))
+    print("")
 
     while True:
         if down_count >= 2:
@@ -466,11 +470,6 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
         random_proxy = random.choice(proxy_list)
         proxy_address, proxy_port = random_proxy.split(':')
 
-        info = get_ip_info(target_ip)
-        print(f" {Style.BRIGHT}{Fore.GREEN}< IP INFO >{sil}")
-        print(f"| >>> Location:", info.get("country"))
-        print(f"| >> ISP:", info.get("org"))
-        print("")
         sarx(f"CHECKING {target_ip} | PROXY | {proxy_address} | PORT | {proxy_port} | PROTOCOL | {protocol}" )
         location_info = get_location_info(proxy_address)
         location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
@@ -541,9 +540,9 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
 
         ping_count += 1
         if ping_count >= 1:
-            time.sleep(1.6)
+            time.sleep(1.1)
 
-        time.sleep(1.6)
+        time.sleep(1.1)
 
 root = tk.Tk()
 root.withdraw()
@@ -695,6 +694,7 @@ def clis():
          max1("Proxy list deleted")
          with open(filename, "r+") as file:
             file.truncate(0)
+
     elif args.info:
         infoxb = args.ip
         os.system('clear')
@@ -710,10 +710,6 @@ def clis():
     check_ip_protocol_from_args(target_ip, protocol)
 
 def check_ip_protocol_from_args(target_ip, protocol):
-    proxy_address = None
-    proxy_port = None
-    protocol = None
-
     try:
         proxy_list = load_proxy_list("proxy_list.txt")
         proxy_count = count_proxies("proxy_list.txt")
