@@ -11,7 +11,7 @@
 
 Check the status of an IP address or domain without banning your request!
 
- 
+
 ## Features 
  
 - Check the status of hosts with different protocols.
@@ -159,8 +159,21 @@ pip install -r requirements.txt
 
 #### Quick usage
 ```
-python3 geohc.py -h
+> python3 geohc.py -h
 
+usage: geohc.py [-h] [--delete-proxy-list] [--install-proxy-list] [--info] [ip] [protocol]
+
+GeoHostChecker
+
+positional arguments:
+  ip                    IP address or domain name
+  protocol              Protocol to check (e.g., HTTP, ICMP)
+
+options:
+  -h, --help            show this help message and exit
+  --delete-proxy-list   Delete proxy list
+  --install-proxy-list  Install proxy list from the internet
+  --info                IP Lookup
 
 ```
 # :question: Why GeoHC?
