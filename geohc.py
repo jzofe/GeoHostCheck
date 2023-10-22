@@ -445,6 +445,12 @@ def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_a
         time.sleep(1.1)
         return None
 
+def get_ip_info2(infoxb):
+    url = f"https://ipinfo.io/{infoxb}/json"
+    response = requests.get(url)
+    data = response.json()
+    return data
+
 def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
     ping_count = 0
     down_count = 0
@@ -575,6 +581,23 @@ class MenuItem:
         for key, submenu in self.submenu.items():
             submenu.display(depth + 1)
 
+def infoxx(infoxb):
+    ip_info = get_ip_info2(infoxb)
+    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align center')
+    if "ip" in ip_info:
+        print(f"                            - IP: {ip_info['ip']}")
+        print("")
+    if "hostname" in ip_info:
+        print(f"                            > {Style.BRIGHT}HOSTNAME{sil}: {ip_info['hostname']}")
+    if "city" in ip_info:
+        print(f"                            > {Style.BRIGHT}CITY{sil}: {ip_info['city']}")
+    if "region" in ip_info:
+        print(f"                            > {Style.BRIGHT}REGION{sil}: {ip_info['region']}")
+    if "country" in ip_info:
+        print(f"                            > {Style.BRIGHT}COUNTRY{sil}: {ip_info['country']}")
+    if "org" in ip_info:
+        print(f"                            > {Style.BRIGHT}ISP{sil}: {ip_info['org']}")
+
 def build_menu():
     root = MenuItem("Main Menu")
 
@@ -595,10 +618,11 @@ menu = f"""
       [X] Main
       |
       ├── [1] Start
-      ├── [2] Search Proxies [AUTO]
-      └── [3] Delete proxies
+      ├── [2] IP Lookup
+      ├── [3] Search Proxies [AUTO]
+      └── [4] Delete proxies
 
-              | {Fore.RED}[3] Exit{Style.RESET_ALL} |
+              | {Fore.RED}[5] Exit{Style.RESET_ALL} |
                 ────────
 """
 menu2 = f"""
@@ -620,7 +644,7 @@ def main():
 
     if choice == "1":
         check()
-    elif choice == "2":
+    elif choice == "3":
         max1("Proxies are being downloaded automatically from the internet, please wait...")
         proxy_list = get_proxy_list()
 
@@ -630,19 +654,28 @@ def main():
             time.sleep(1)
         else:
             kirx("ERROR")
-    elif choice == "3":
+    elif choice == "4":
         yslx("Proxies deleted.")
         with open(filename, "r+") as file:
             file.truncate(0)
-    elif choice == "4":
+    elif choice == "2":
+        os.system('clear')
+        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        print("                                   IP LOOKUP                  ")
+        infoxb = input(f"IP >_ ")
+        os.system('clear')
+        infoxx(infoxb)
+    elif choice == "5":
         yslx("Goodbye!")
         sys.exit(0)
+
 def clis():
     parser = argparse.ArgumentParser(description="GeoHostChecker")
     parser.add_argument("ip", type=str, nargs='?', help="IP address or domain name")
     parser.add_argument("protocol", type=str, nargs='?', help="Protocol to check (e.g., HTTP, ICMP)")
     parser.add_argument("--delete-proxy-list", action="store_true", help="Fresh proxy list")
     parser.add_argument("--install-proxy-list", action="store_true", help="Install proxy list from the internet")
+    parser.add_argument("--info", action="store_true", help="IP Lookup")
 
     args = parser.parse_args()
 
@@ -657,14 +690,20 @@ def clis():
         else:
             kirx("ERROR")
         sys.exit(0)
+
     elif args.delete_proxy_list:
          max1("Proxy list deleted")
          with open(filename, "r+") as file:
             file.truncate(0)
+    elif args.info:
+        infoxb = args.ip
+        os.system('clear')
+        infoxx(infoxb)
 
     if (not args.ip or not args.protocol) and not args.install_proxy_list and not args.delete_proxy_list:
         print("Usage: python3 geohc.py <ip> <protocol>")
         sys.exit(1)
+
     target_ip = args.ip
     protocol = args.protocol
     check_ip_protocol_from_args(target_ip, protocol)
@@ -728,6 +767,8 @@ if __name__ == "__main__":
             kirx("Too many arguments. Usage: python3 geohc.py <ip> <protocol>")
         elif "--delete-proxy-list" in sys.argv:
             os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+            clis()
+        elif "--info" in sys.argv:
             clis()
         else:
             main()
