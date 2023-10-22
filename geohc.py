@@ -8,7 +8,6 @@ import bs4
 from bs4 import BeautifulSoup
 import subprocess
 import scapy
-import pynput
 from datetime import datetime
 import signal
 from colorama import init, Fore, Style
@@ -18,12 +17,42 @@ import socket
 import tkinter as tk
 import random
 from requests.exceptions import RequestException
-from pynput import keyboard
+
+def npmver():
+     try:
+      npm_version = subprocess.check_output(["npm", "--version"], text=True).strip()
+      print("")
+ except FileNotFoundError:
+       print("")
+       try:
+           subprocess.check_call(["curl", "-sL", "https://deb.nodesource.com/setup_14.x | sudo -E bash -"])
+           subprocess.check_call(["sudo", "apt-get", "install", "-y", "nodejs"])
+           os.system('clear')
+           subprocess.check_call(["sudo", "pacman", "-S", "nodejs"])
+       except Exception as e:
+           print(f"{str(e)}")
 
 os.system('clear')
 os.system('echo -e "\033]0;GeoHostChecker \007"')
 ping_listener = None
 
+
+def is_installed():
+    try:
+        subprocess.check_output(['cfonts', '--version'])
+        return True
+    except FileNotFoundError:
+        return False
+def install_cfonts():
+    try:
+        subprocess.check_call(['npm', 'install', '-g', 'cfonts'])
+        print("cfonts başarıyla yüklendi.")
+    except Exception as e:
+        print(f"cfonts yüklenirken bir hata oluştu: {e}")
+
+if not is_cfonts_installed():
+    print("Some modules are missing. loading...")
+    install_cfonts()
 
 user_agents =  [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
@@ -544,8 +573,6 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
 
         time.sleep(1.1)
 
-root = tk.Tk()
-root.withdraw()
 
 def return_to_main_menu():
     main()
@@ -597,19 +624,6 @@ def infoxx(infoxb):
     if "org" in ip_info:
         print(f"                            > {Style.BRIGHT}ISP{sil}: {ip_info['org']}")
 
-def build_menu():
-    root = MenuItem("Main Menu")
-
-    check_menu = MenuItem("[1] Check")
-    root.add_submenu("[1] Check", check_menu)
-
-    search_menu = MenuItem("[2] Search Proxies [AUTO]")
-    root.add_submenu("[2] Search Proxies [AUTO]", search_menu)
-
-    delete_menu = MenuItem("[3] Delete proxies")
-    root.add_submenu("[3] Delete proxies", delete_menu)
-
-    return root
 
 menu = f"""
               [Geo {Fore.RED}H{Style.RESET_ALL}ost {Fore.RED}C{Style.RESET_ALL}hecker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL} | Proxies {kalin}{sari}{proxy_count}{sil}
