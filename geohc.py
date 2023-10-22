@@ -1,5 +1,6 @@
 import os
 import time
+import argparse
 import sys
 import requests
 from requests import get
@@ -23,6 +24,7 @@ os.system('clear')
 os.system('echo -e "\033]0;GeoHostChecker | Main \007"')
 ping_listener = None
 
+
 user_agents =  [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/52.0 Safari/537.36",
@@ -41,6 +43,12 @@ user_agents =  [
 
 def get_user_agent():
     return random.choice(user_agents)
+
+def get_ip_info(target_ip):
+    url = f"https://ipinfo.io/{target_ip}/json"
+    response = requests.get(url)
+    data = response.json()
+    return data
 
 def check():
     def on_key_release(key):
@@ -421,6 +429,7 @@ def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_a
         print("")
         time.sleep(1.1)
         return None
+
 def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
     ping_count = 0
     down_count = 0
@@ -436,9 +445,12 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
         random_proxy = random.choice(proxy_list)
         proxy_address, proxy_port = random_proxy.split(':')
 
-
-        sarx(f"CHECKING {target_ip} | PROXY | {proxy_address} | PORT | {proxy_port} | PROTOCOL | {protocol}")
-
+        info = get_ip_info(target_ip)
+        print(f" {Style.BRIGHT}{Fore.GREEN}< IP INFO >{sil}")
+        print(f"| >>> Location:", info.get("country"))
+        print(f"| >> ISP:", info.get("org"))
+        print("")
+        sarx(f"CHECKING {target_ip} | PROXY | {proxy_address} | PORT | {proxy_port} | PROTOCOL | {protocol}" )
         location_info = get_location_info(proxy_address)
         location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
 
@@ -608,6 +620,42 @@ def main():
         yslx("Goodbye!")
         sys.exit(0)
 
+def check_ip_protocol_from_args():
+    if len(sys.argv) != 3:
+        print("Kullanım: python3 geohc.py <ip> <protocol>")
+        sys.exit(1)
+
+    proxy_list = load_proxy_list("proxy_list.txt")
+    proxy_count = count_proxies(filename)
+    user_agent = get_user_agent()
+    proxy_list = get_proxy_list()
+    target_ip = sys.argv[1]
+    protocol = sys.argv[2]
+    proxy_list = load_proxy_list("proxy_list.txt")
+    ping_menu = f"""
+                     [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
+
+                      IP : >{target_ip}< | Total proxy : {kalin}{sari}{proxy_count}{sil} | {protocol}
+
+                                      Exit : {Fore.RED}Q{Style.RESET_ALL}
+
+    """
+    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+    print(ping_menu)
+
+    current_proxy_index = 0
+
+    while current_proxy_index < len(proxy_list):
+        proxy = proxy_list[current_proxy_index]
+        proxy_address, proxy_port = proxy.split(':')
+        user_agent = get_user_agent()
+        result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
+
+        if not result:
+            current_proxy_index += 1
+        else:
+            current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
+    ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_interrupt)
@@ -616,4 +664,7 @@ if __name__ == "__main__":
     port = 80
     tls_port = 443
     filename = "proxy_list.txt"
-    main()
+    if len(sys.argv) == 3:
+        check_ip_protocol_from_args()
+    else:
+        main()
