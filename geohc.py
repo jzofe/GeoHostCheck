@@ -55,8 +55,6 @@ def check():
             return_to_main_menu()
 
     proxy_count = count_proxies(filename)
-    listener = keyboard.Listener(on_release=on_key_release)
-    listener.start()
 
     ip_menu = f"""
                      [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
@@ -98,7 +96,6 @@ def check():
         else:
             current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
 
-    listener.stop()
     return_to_main_menu()
 
 def check_dependencies():
