@@ -64,7 +64,7 @@ def check():
         Total proxy : {kalin}{sari}{proxy_count}{sil}
     """
     os.system('clear')
-    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+    os.system('clear && cfonts GeoHC -f 3d -c red')
     print(ip_menu)
     target_ip = input(f" {Fore.GREEN}root{Style.RESET_ALL}@geohc/host IP/Domain >_ ")
     print("")
@@ -81,7 +81,7 @@ def check():
 
     """
     os.system('clear')
-    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+    os.system('clear && cfonts GeoHC -f 3d -c red')
     print(ping_menu)
 
     proxy_list = load_proxy_list("proxy_list.txt")
@@ -619,7 +619,7 @@ menu2 = f"""
 """
 def main():
     os.system('clear')
-    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+    os.system('clear && cfonts GeoHC -f 3d -c red')
     print(menu)
     choice = input(f"{Style.BRIGHT}{Fore.GREEN}root{Style.RESET_ALL}@geohc >_ ")
 
@@ -641,7 +641,7 @@ def main():
             file.truncate(0)
     elif choice == "2":
         os.system('clear')
-        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        os.system('clear && cfonts GeoHC -f 3d -c red')
         print("                                   IP LOOKUP                  ")
         infoxb = input(f"IP >_ ")
         os.system('clear')
@@ -705,7 +705,7 @@ def check_ip_protocol_from_args(target_ip, protocol):
                                           Exit : {}Q{}
         """.format(Fore.MAGENTA, Style.RESET_ALL, target_ip, kalin, Fore.MAGENTA, Style.RESET_ALL, proxy_count, sil, protocol, Fore.RED, Style.RESET_ALL)
 
-        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        os.system('clear && cfonts GeoHC -f 3d -c red')
         print(ping_menu)
 
         current_proxy_index = 0
@@ -734,7 +734,7 @@ if __name__ == "__main__":
     filename = "proxy_list.txt"
 
     if "--install-proxy-list" in sys.argv:
-        os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+        os.system('clear && cfonts GeoHC -f 3d -c red')
         clis()
     else:
         if len(sys.argv) == 3:
@@ -742,7 +742,7 @@ if __name__ == "__main__":
         elif len(sys.argv) > 3:
             kirx("Too many arguments. Usage: python3 geohc.py <ip> <protocol>")
         elif "--delete-proxy-list" in sys.argv:
-            os.system('cfonts GeoHC -f 3d -c "#f00".gray --align left')
+            os.system('clear && cfonts GeoHC -f 3d -c red')
             clis()
         elif "--info" in sys.argv:
             clis()
