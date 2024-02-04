@@ -70,12 +70,6 @@ def check():
     print("HTTP, TLS, UDP, TCP, ICMP | DNS")
     print("")
     protocol = input("> Select a protocol : ")
-    port = input(f"> Enter the port (default is 80): ")
-    if not port:
-        port = 80
-    else:
-        port = int(port)
-            
     ping_menu = f"""
                      [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
 
@@ -451,7 +445,7 @@ def get_ip_info2(infoxb):
     data = response.json()
     return data
 
-def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent, port):
+def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
     ping_count = 0
     down_count = 0
     info = get_ip_info(target_ip)
@@ -524,7 +518,7 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
             elif protocol == "DNS":
                 send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent)
             elif protocol == "TCP":
-                send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent, port)
+                send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent)
             elif protocol == "TLS":
                 send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent)
             else:
@@ -713,27 +707,16 @@ def check_ip_protocol_from_args(target_ip, protocol):
 
         current_proxy_index = 0
 
-while current_proxy_index < len(proxy_list):
-    proxy = proxy_list[current_proxy_index]
+        while current_proxy_index < len(proxy_list):
+            proxy = proxy_list[current_proxy_index]
+            proxy_address, proxy_port = proxy.split(':')
+            user_agent = get_user_agent()
+            result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
 
-    # Add a check for colon in the proxy line
-    if ':' in proxy:
-        proxy_address, proxy_port = proxy.split(':')
-        user_agent = get_user_agent()
-        result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
-
-        if not result:
-            current_proxy_index += 1
-        else:
-            current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
-    else:
-        # Handle the case where the proxy line is not formatted as expected
-        print(f"Invalid proxy format: {proxy}. Skipping...")
-        current_proxy_index += 1
-    else:
-        # Handle the case where the proxy line is not formatted as expected
-        print(f"Invalid proxy format: {proxy}. Skipping...")
-        current_proxy_index += 1
+            if not result:
+                current_proxy_index += 1
+            else:
+                current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
         ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
     except PermissionError:
         print("You need root permissions to run this script. Try running with 'sudo su' command.")
