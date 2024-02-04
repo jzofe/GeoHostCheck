@@ -70,6 +70,10 @@ def check():
     print("HTTP, TLS, UDP, TCP, ICMP | DNS")
     print("")
     protocol = input("> Select a protocol : ")
+        
+    if protocol.upper() == "TCP":
+        tcp_port = int(input("> Enter TCP port: "))
+            
     ping_menu = f"""
                      [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
 
@@ -724,7 +728,7 @@ def check_ip_protocol_from_args(target_ip, protocol):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_interrupt)
-    tcp_port = 58200 
+    tcp_port = 443 
     udp_port = 53
     port = 80
     tls_port = 443
