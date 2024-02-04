@@ -574,7 +574,7 @@ class MenuItem:
 
 def infoxx(infoxb):
     ip_info = get_ip_info2(infoxb)
-    os.system('cfonts GeoHC -f 3d -c "#f00".gray --align center')
+    os.system('cfonts GeoHC -f 3d -c "#FE0000" --align center')
     if "ip" in ip_info:
         print(f"                            - IP: {ip_info['ip']}")
         print("")
