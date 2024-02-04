@@ -724,7 +724,7 @@ def check_ip_protocol_from_args(target_ip, protocol):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_interrupt)
-    tcp_port = 443
+    tcp_port = 58200 
     udp_port = 53
     port = 80
     tls_port = 443
