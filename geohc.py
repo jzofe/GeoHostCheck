@@ -70,6 +70,12 @@ def check():
     print("HTTP, TLS, UDP, TCP, ICMP | DNS")
     print("")
     protocol = input("> Select a protocol : ")
+    port = input(f"> Enter the port (default is 80): ")
+    if not port:
+        port = 80
+    else:
+        port = int(port)
+            
     ping_menu = f"""
                      [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{Style.RESET_ALL}
 
@@ -445,7 +451,7 @@ def get_ip_info2(infoxb):
     data = response.json()
     return data
 
-def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent):
+def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent, port):
     ping_count = 0
     down_count = 0
     info = get_ip_info(target_ip)
@@ -518,7 +524,7 @@ def ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, 
             elif protocol == "DNS":
                 send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent)
             elif protocol == "TCP":
-                send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent)
+                send_tcp_request(target_ip, tcp_port, protocol, proxy_address, user_agent, port)
             elif protocol == "TLS":
                 send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent)
             else:
