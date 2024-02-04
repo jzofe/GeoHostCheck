@@ -713,9 +713,11 @@ def check_ip_protocol_from_args(target_ip, protocol):
 
         current_proxy_index = 0
 
- while current_proxy_index < len(proxy_list):
-        proxy = proxy_list[current_proxy_index]    
-        if ':' in proxy:
+while current_proxy_index < len(proxy_list):
+    proxy = proxy_list[current_proxy_index]
+
+    # Add a check for colon in the proxy line
+    if ':' in proxy:
         proxy_address, proxy_port = proxy.split(':')
         user_agent = get_user_agent()
         result = ping_with_proxy(target_ip, proxy_list, proxy_address, proxy_port, protocol, user_agent)
@@ -724,6 +726,10 @@ def check_ip_protocol_from_args(target_ip, protocol):
             current_proxy_index += 1
         else:
             current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
+    else:
+        # Handle the case where the proxy line is not formatted as expected
+        print(f"Invalid proxy format: {proxy}. Skipping...")
+        current_proxy_index += 1
     else:
         # Handle the case where the proxy line is not formatted as expected
         print(f"Invalid proxy format: {proxy}. Skipping...")
