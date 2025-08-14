@@ -336,37 +336,6 @@ def send_udp_packet(target_ip, target_port, protocol, proxy_address):
     finally:
         client_socket.close()
 
-def send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent):
-    location_info = get_location_info(proxy_address)
-    location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
-
-    if location_info:
-        location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
-
-    try:
-        response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
-
-        if response.status_code == 200:
-            response_text = response.text
-            yslx(f"UP! | {target_ip} | {location_str} | {protocol}")
-            return response_text
-        else:
-            kirx("DOWN! | LOCATION {location_str}")
-            print("")
-            user2(f"Host DOWN. User-agent changed to: {user_agent}")
-            print("")
-            time.sleep(1.1)
-            return None
-
-    except RequestException as e:
-        kirx(f"An error occurred: {str(e)}")
-        kirx(f"DOWN | {target_ip} | {location_str} | {protocol}")
-        print("")
-        user2(f"Host DOWN. User-agent changed to: {user_agent}")
-        print("")
-        time.sleep(1.1)
-        return None
-
 def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
     location_info = get_location_info(proxy_address)
     location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
@@ -374,10 +343,16 @@ def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
     if location_info:
         location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
 
-    request = f"GET / HTTP/1.1\r\nHost: {target_ip}\r\n\r\n"
+    headers = {
+        "User-Agent": user_agent
+    }
+    proxies = {
+        "http": f"http://{proxy_address}:{port}",
+        "https": f"http://{proxy_address}:{port}"
+    }
 
     try:
-        response = requests.get(f"http://{target_ip}", headers=headers)
+        response = requests.get(f"http://{target_ip}", headers=headers, proxies=proxies, timeout=10)
 
         if response.status_code == 200:
             response_text = response.text
@@ -399,28 +374,25 @@ def send_http_request(target_ip, port, protocol, proxy_address, user_agent):
         print("")
         time.sleep(1.1)
         return None
-headers = {
-    "User-Agent": get_user_agent(),
-}
 
-def resolve_ip_to_hostname(target_ip):
-    try:
-        hostname, _, _ = socket.gethostbyaddr(target_ip)
-        return hostname
-    except socket.herror as e:
-        kirx(f"Failed to resolve IP address {target_ip} to hostname: {str(e)}")
-        return None
 
-def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent):
+def send_tls_request(target_ip, tls_port, protocol, proxy_address, user_agent):
     location_info = get_location_info(proxy_address)
     location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
 
     if location_info:
         location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
 
-    url = f"https://{target_ip}"
+    headers = {
+        "User-Agent": user_agent
+    }
+    proxies = {
+        "http": f"http://{proxy_address}:{tls_port}",
+        "https": f"http://{proxy_address}:{tls_port}"
+    }
+
     try:
-        response = requests.get(f"https://{target_ip}", headers=headers, proxies={"http": f"http://{proxy_address}:{tls_port}"}, timeout=10)
+        response = requests.get(f"https://{target_ip}", headers=headers, proxies=proxies, timeout=10)
 
         if response.status_code == 200:
             response_text = response.text
@@ -442,6 +414,59 @@ def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_a
         print("")
         time.sleep(1.1)
         return None
+
+
+def send_tls_request_to_dns(target_ip, tls_port, protocol, proxy_address, user_agent):
+    location_info = get_location_info(proxy_address)
+    location_str = f"{Fore.MAGENTA}LOCATION: Unknown{Style.RESET_ALL}"
+
+    if location_info:
+        location_str = f"{Fore.MAGENTA}LOCATION: {location_info['country']}, {location_info['city']}, {location_info['region']}{Style.RESET_ALL}"
+
+    headers = {
+        "User-Agent": user_agent
+    }
+    proxies = {
+        "http": f"http://{proxy_address}:{tls_port}",
+        "https": f"http://{proxy_address}:{tls_port}"
+    }
+
+    try:
+        response = requests.get(f"https://{target_ip}", headers=headers, proxies=proxies, timeout=10)
+
+        if response.status_code == 200:
+            response_text = response.text
+            yslx(f"UP! | {target_ip} | {location_str} | {protocol}")
+            return response_text
+        else:
+            kirx("DOWN! | LOCATION {location_str}")
+            print("")
+            user2(f"Host DOWN. User-agent changed to: {user_agent}")
+            print("")
+            time.sleep(1.1)
+            return None
+
+    except RequestException as e:
+        kirx(f"An error occurred: {str(e)}")
+        kirx(f"DOWN | {target_ip} | {location_str} | {protocol}")
+        print("")
+        user2(f"Host DOWN. User-agent changed to: {user_agent}")
+        print("")
+        time.sleep(1.1)
+        return None
+
+headers = {
+    "User-Agent": get_user_agent(),
+}
+
+def resolve_ip_to_hostname(target_ip):
+    try:
+        hostname, _, _ = socket.gethostbyaddr(target_ip)
+        return hostname
+    except socket.herror as e:
+        kirx(f"Failed to resolve IP address {target_ip} to hostname: {str(e)}")
+        return None
+
 
 def get_ip_info2(infoxb):
     url = f"https://ipinfo.io/{infoxb}/json"
