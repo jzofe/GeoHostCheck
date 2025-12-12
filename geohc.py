@@ -59,7 +59,7 @@ def save_proxy_list(proxies):
 
 def get_proxy_list():
     sarx("Proxies are being downloaded auto from the internet, please wait...")
-    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000"
+    url = "https://free.redscrape.com/api/proxies?&protocol=http&max_timeout=1500&format=txt"
     try:
         r = requests.get(url, timeout=20)
         proxies = [line.strip() for line in r.text.splitlines() if line.strip()]
