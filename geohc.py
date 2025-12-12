@@ -35,12 +35,30 @@ def user2(msg): print(f"{kalin}{mavi}[USER-AGENT]{sil} X {msg}")
 
 def get_location(ip):
     try:
-        r = requests.get(f"http://ip-api.com/json/{ip}?fields=country,city,regionName", timeout=6)
+        r = requests.get(
+            f"http://ip-api.com/json/{ip}?fields=status,country,city,regionName,message", 
+            timeout=8
+        )
+        r.raise_for_status() 
         j = r.json()
-        if j["status"] == "success":
-            return f"{j['country']} • {j['city']} • {j['regionName']}"
-    except: pass
-    return "error"
+        
+        if j.get("status") == "success":
+            city = j.get('city') if j.get('city') else 'N/A City'
+            region = j.get('regionName') if j.get('regionName') else 'N/A Region'
+            country = j.get('country') if j.get('country') else 'N/A Country'
+            return f"{country} • {city} • {region}"
+        
+        elif j.get("status") == "fail" and j.get("message"):
+            return f"API Failed: {j['message']}"
+
+    except requests.exceptions.Timeout:
+        return "Location Timeout"
+    except requests.exceptions.RequestException as e:
+        return "Location Error" 
+    except Exception:
+        return "Location Error"
+    
+    return "Location Error"
 
 def load_proxy_list():
     try:
@@ -75,7 +93,7 @@ def count_proxies():
 
 def check_http_tls(target, proxy):
     ip = proxy.split(":")[0]
-    location = get_location(ip)
+    location = get_location(ip) 
     ua = random.choice(user_agents)
     proxies = {"http": f"http://{proxy}", "https": f"http://{proxy}"}
     headers = {"User-Agent": ua}
@@ -83,14 +101,18 @@ def check_http_tls(target, proxy):
     for proto in ["http", "https"]:
         try:
             r = requests.get(f"{proto}://{target}", headers=headers, proxies=proxies, timeout=12, allow_redirects=True)
+            status_code = str(r.status_code)
+            
             if r.status_code < 400:
-                yslx(f"UP! | {target:25} | {proto.upper():5} | {proxy:22} | {location}")
+                yslx(f"{'UP!':^5} | {target:^25} | {proto.upper():^8} | {proxy:^22} | {location:^35} | {status_code:^6}")
                 return True
             else:
-                kirx(f"DOWN | {target:25} | {proto.upper():5} | {proxy:22} | {location} | {r.status_code}")
-        except:
-            kirx(f"DOWN | {target:25} | {proto.upper():5} | {proxy:22} | {location} | timeout")
-    user2(f"User-Agent Changed → {ua}")
+                kirx(f"{'DOWN':^5} | {target:^25} | {proto.upper():^8} | {proxy:^22} | {location:^35} | {status_code:^6}")
+        except requests.exceptions.Timeout:
+            kirx(f"{'DOWN':^5} | {target:^25} | {proto.upper():^8} | {proxy:^22} | {location:^35} | {'Timeout':^6}")
+        except requests.exceptions.RequestException:
+            kirx(f"{'DOWN':^5} | {target:^25} | {proto.upper():^8} | {proxy:^22} | {location:^35} | {'Error':^6}")
+    
     return False
 
 def check_tcp(target, port, proxy):
@@ -101,14 +123,26 @@ def check_tcp(target, port, proxy):
         with requests.Session() as s:
             s.proxies.update(proxies)
             resp = s.send(requests.Request("CONNECT", f"{target}:{port}").prepare(), timeout=10)
+            
+            status_code = str(resp.status_code)
+
+            proto_str = f"TCP:{port}"
+
             if resp.status_code in [200, 201]:
-                yslx(f"UP! | {target:25} | TCP:{port}  | {proxy:22} | {location}")
+                yslx(f"{'UP!':^5} | {target:^25} | {proto_str:^8} | {proxy:^22} | {location:^35} | {status_code:^6}")
                 return True
-    except: pass
-    kirx(f"DOWN | {target:25} | TCP:{port}  | {proxy:22} | {location}")
+            else:
+                kirx(f"{'DOWN':^5} | {target:^25} | {proto_str:^8} | {proxy:^22} | {location:^35} | {status_code:^6}")
+                return False
+    except requests.exceptions.Timeout:
+        proto_str = f"TCP:{port}"
+        kirx(f"{'DOWN':^5} | {target:^25} | {proto_str:^8} | {proxy:^22} | {location:^35} | {'Timeout':^6}")
+    except requests.exceptions.RequestException:
+        proto_str = f"TCP:{port}"
+        kirx(f"{'DOWN':^5} | {target:^25} | {proto_str:^8} | {proxy:^22} | {location:^35} | {'Error':^6}")
     return False
 
-def start_check(target, protocol):
+def start_check(target, protocol, tcp_ports=None): 
     os.system('clear && cfonts GeoHC -f 3d -c red')
     proxy_list = load_proxy_list()
     if not proxy_list:
@@ -119,42 +153,53 @@ def start_check(target, protocol):
     print(f"""
                      [Geo Host Checker] by Fyks {Fore.MAGENTA}<scriptkidsensei>{sil}
 
-                      IP : >{target}< | Total proxy : {kalin}{sari}{len(proxy_list)}{sil} | {protocol.upper()}
+                      HOST: >{target}< | Total proxy : {kalin}{sari}{len(proxy_list)}{sil} | {protocol.upper()}
 
                                       Exit : {Fore.RED}Q{sil}
     """)
-    print(f"{'PROTOKOL':10} {'PROXY':24} {'LOKASYON':35} {'SONUÇ'}\n" + "─"*100)
+    
+    print(f"{'STATUS':^5} | {'TARGET':^25} | {'PROTO':^8} | {'PROXY':^22} | {'LOCATION':^35} | {'RESULT':^6}\n" + "─"*120)
 
     used = set()
     for proxy in proxy_list:
         if proxy in used: continue
         used.add(proxy)
 
+        is_up = False
         if protocol.upper() in ["HTTP", "TLS", "ALL"]:
-            check_http_tls(target, proxy)
+            if check_http_tls(target, proxy):
+                is_up = True
 
-        if protocol.upper() in ["TCP", "ALL"]:
-            for port in [80, 443, 8080, 8443]:
-                check_tcp(target, port, proxy)
+        if protocol.upper() in ["TCP", "ALL"] and not is_up and tcp_ports: 
+            for port in tcp_ports:
+                if check_tcp(target, port, proxy):
+                    is_up = True
+                    break
 
         time.sleep(0.8)  
 
     input(f"\n{kalin}{yesil} finish. press enter for back to menu.{sil}")
 
-def infoxx(ip):
+
+def get_tcp_ports():
+    default_ports = "80,443,8080,8443"
+    
+    print(f"\n> Enter ports to check (e.g., 80,443,21,22).")
+    ports_input = input(f"> Press Enter for default ({default_ports}): ").strip()
+    
+    if not ports_input:
+        ports_input = default_ports
+
     try:
-        r = requests.get(f"https://ipinfo.io/{ip}/json")
-        data = r.json()
-        os.system('clear && cfonts GeoHC -f 3d -c red')
-        print(f"""
-                            - IP: {data.get('ip','?')}
-                            > HOSTNAME : {data.get('hostname','?')}
-                            > CITY     : {data.get('city','?')}
-                            > REGION   : {data.get('region','?')}
-                            > COUNTRY  : {data.get('country','?')}
-                            > ISP      : {data.get('org','?')}
-        """)
-    except: kirx("error")
+        ports_list = [int(p.strip()) for p in ports_input.split(',') if p.strip().isdigit() and 1 <= int(p.strip()) <= 65535]
+        if not ports_list:
+            kirx("Invalid port list. Default ports will be used.")
+            return [80, 443, 8080, 8443]
+        return ports_list
+    except:
+        kirx("Error: Ports must be numbers. Default ports will be used.")
+        return [80, 443, 8080, 8443]
+
 
 def main():
     while True:
@@ -182,9 +227,15 @@ def main():
             print("\nPROTOCOLS")
             print("HTTP, TLS, TCP, ALL")
             proto = input("\n> Select a protocol : ").strip()
+            
+            tcp_ports = None
+            if proto.upper() in ["TCP", "ALL"]:
+                tcp_ports = get_tcp_ports() 
+
             if proto.upper() not in ["HTTP","TLS","TCP","ALL"]:
                 proto = "ALL"
-            start_check(target, proto)
+
+            start_check(target, proto, tcp_ports) 
 
         elif choice == "2":
             os.system('clear && cfonts GeoHC -f 3d -c red')
